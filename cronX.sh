@@ -1,5 +1,10 @@
 #! /bin/bash
 
+# If you're doing system ruby.
+export RUBYOPT="rubygems"
+export GEM_HOME=$HOME/.gem
+export GEM_PATH=$GEM_PATH:$HOME/.gem/ruby/1.8.7
+
 # Stupid hack to be able to run gconftool/notify from cron.
 # http://ubuntuforums.org/showpost.php?p=7210276
 
