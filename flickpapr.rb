@@ -15,6 +15,10 @@ require 'ffi-xattr'
 # Debug cron here if you have issues.
 ##puts $LOAD_PATH
 
+dir = File.expand_path(File.dirname(__FILE__))
+icon    = dir + "/flickr-icon.png"
+icon_bw = dir + "/flickr-icon-bw.png"
+
 int_table = 'http://www.flickr.com/explore/interesting/7days/'
 doc = Nokogiri::HTML( open(int_table) )
 
@@ -54,19 +58,42 @@ jpg_path = "#{archive}/#{jpg}"
 FileUtils.mkdir_p archive
 `wget --quiet '#{pic}' -O #{jpg_path}`
 
+# Discard and abort if dimensions not panoramic.
+w, h = `identify #{jpg_path}`.gsub(/.* (\d+x\d+) .*/, '\1').strip.split('x').map!(&:to_f)
+if w / h < 1.2
+  # Would be better to do re-fetch loop, but doing the simpler thing.
+  `notify-send -i #{icon_bw} "Wallpaper dimensions unsuitable" "Wait for next cycle"`
+  ##puts about_uri, w, h
+  File.delete jpg_path
+  exit 1
+end
+
+# Shrink if too big.
+# I’ve witnessed large wallpaper files crashing GNOME.
+max_width = 2000 # wiggle room to crop to 1920
+if w > max_width
+  ##puts "Shrinking huge image #{jpg_path} to #{max_width}."
+  huge_path = jpg_path+".huge"
+  File.rename jpg_path, huge_path
+  `convert -scale #{max_width}x #{huge_path} #{jpg_path}`
+  File.delete huge_path
+end
+
 # Set the extended filesystem attributes.
 attrs = Xattr.new(jpg_path)
 attrs['user.location'] = location if ! location.empty?
 attrs['user.title'] = title
 attrs['user.url'] = about_uri
 
-#puts about_uri
-#puts jpg_path
-#puts title, location
+# Might want to someday display filename if popup becomes clickable.
+title_and_fname = title.dump + " (#{jpg_path})"
+##puts about_uri, jpg_path, title, location, title_and_fname
+
 
 # Using `dump` to avoid extra quotes (punctuation) going to shell.
-`notify-send #{title.dump} #{location.dump}`
+# No sense in displaying URI or filename since can’t copy from NS popup.
+`notify-send -i #{icon} #{title.dump} #{location.dump}`
 
-# GConfTool is the programmatic means to control GNOME’s wallpaper.
-# Substitute with your OS’s equivalent.
+# GConfTool is a programmatic means to control GNOME’s wallpaper.
+# Not sure why this is such a heavy op; maybe due to two large monitors.
 `/usr/bin/gconftool -t str -s /desktop/gnome/background/picture_filename #{jpg_path}`

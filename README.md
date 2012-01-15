@@ -1,7 +1,7 @@
 # flickpapr — Randomly choose an “interesting” flickr photo for desktop wallpaper.
 
-AUTHOR:  [Micah Elliott](http://MicahElliott.com)
-LICENSE: [WTFPL](http://sam.zoy.org/wtfpl/)
+* AUTHOR:  [Micah Elliott](http://MicahElliott.com)
+* LICENSE: [WTFPL](http://sam.zoy.org/wtfpl/)
 
 ## About Flickr Interestingness
 
@@ -23,14 +23,22 @@ is displayed and stowed away in extended filesystem attributes, which can
 later be queried.
 
 I recommend going through these once a month or so to select some faves for
-future desktops BGs.
+future desktops BGs. There are several
+[file managers (photo browsers)](http://www.tuxarena.com/2011/06/20-file-managers-for-ubuntu/)
+to consider. There are also photo editors, such as “shot well”.
+
+<img src="https://github.com/MicahElliott/flickpapr/raw/master/screenshots/flickpapr.jpg" alt="Flickpapr Screenshot" title="Flickpapr Screenshot" align="right" />
 
 ## Dependencies
 
 * GNOME (but adaptable to whatever scriptable desktop manipulator).
 * Ruby
-* Nokogiri gem (just made it too easy to not depend on flickr API).
-* ffi-xattr, ffi gems (for creating xattrs database)
+* [Nokogiri](http://nokogiri.org/) gem (just made it too easy to not depend on
+  flickr API).
+* [ffi-xattr](https://github.com/jarib/ffi-xattr), ffi gems, for creating
+  xattrs database
+* ImageMagick, to identify/discard/shrink large/malproportioned images.
+* libnotify-bin, for `notify-send` popup (but could use alternative)
 
 ## Usage
 
@@ -80,6 +88,13 @@ your wallpapers.
 * Haven’t researched what “screensaver” apps (cf. “wallpapers”) are out there
   that could also use these images.
 * No way to “like” a pic in real time; have to visit dir to select faves.
+
+## Future improvements
+
+* Use Zsh’s `attr` module to make clean query interface
+* Use Zenity (or some other popup/shell-gui tool) for clickable URLs
+* Unicode support
+* Cycle through to grab another image if dimensions unsuitable
 
 ## Surprises
 
