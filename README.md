@@ -11,11 +11,9 @@ to see page after page of these. BUT… it’s much better just have these
 delivered right to your desktop as a wallpaper. Well, maybe you should just
 have pics of your cats going there, but these can be a little more
 inspirational. The cats shouldn’t get too jealous; they’ll love all the bugs!
-
-There’s a danger in coming to flickr every day to peruse interesting pics. And
-anyway, they’re too small there. So this little script recipe just puts one at
-random on your desktop every so often. It also puts a desktop notification
-describing the photo and location.
+This little script recipe just puts an image at random onto your desktop every
+so often. It also puts a desktop notification describing the photo and
+location.
 
 <img src="https://github.com/MicahElliott/flickpapr/raw/master/screenshots/montignano.jpg" alt="Flickpapr Screenshot" title="Flickpapr Screenshot" align="center" />
 <br />
@@ -26,13 +24,14 @@ is displayed and stowed away in extended filesystem attributes, which can
 later be queried.
 
 I recommend going through these once a month or so to select some faves for
-future desktops BGs. There are several
+future, more permanent desktops BGs. There are several
 [file managers (photo browsers)](http://www.tuxarena.com/2011/06/20-file-managers-for-ubuntu/)
-to consider. There are also photo editors, such as “shot well”.
+to consider. There are also photo editors, such as
+[shotwell](http://yorba.org/shotwell/) if you don’t do gimp.
 
 ## Dependencies
 
-* GNOME (but adaptable to whatever scriptable desktop manipulator).
+* GNOME/gconftool (but adaptable to whatever scriptable desktop manipulator).
 * Ruby (v1.8.7+)
 * [Nokogiri](http://nokogiri.org/) gem (just made it too easy to not depend on
   flickr API).
@@ -41,18 +40,23 @@ to consider. There are also photo editors, such as “shot well”.
 * ImageMagick, to identify/discard/shrink large/malproportioned images.
 * libnotify-bin, for `notify-send` popup (but could use alternative)
 
+An example for installing everything (on a deb-based system similar to mine):
+
+    % aptitude install imagemagick libnotify-bin ruby
+    % gem install nokogiri ffi-xattr
+
 ## Usage
 
 Note that there’s a new-ish limitation in Ubuntu that disables updating
 desktop things via `cron`. The `cronX` wrapper script (included) works around
 this, so use it to call `flickpapr`.
 
-You can test by simply running `./cronX.zsh flickpapr.rb`. If that works, put
+You can test by simply running `./cronX.sh flickpapr.rb`. If that works, put
 something like these (choose one) in your crontab for rotation (`crontab -e`):
 
     MAILTO = you@example.com
 
-    @hourly .../cronX.zsh .../flickpapr.rb
+    @hourly .../cronX.sh .../flickpapr.rb
 
     # Pomodoro productivity!
     0,30 * * * * ...
@@ -105,3 +109,9 @@ the scraping a la nokogiri is really simple.
 _Why not just use EXIF metadata for storing pic info?_ EXIF data is noisy,
 mostly not wanted, and difficult to query. Flickr doesn’t do much (anything?)
 with storing the real geolocation data there anyway.
+
+## Tangentially related resources
+
+As seen in screenshot:
+* [Orp Font](https://github.com/MicahElliott/Orp-Font)
+* [Balance Zsh Prompt](https://gist.github.com/720293)

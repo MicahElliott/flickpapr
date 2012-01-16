@@ -11,7 +11,6 @@
 
 require 'nokogiri'
 require 'open-uri'
-require 'ffi-xattr'
 
 # Debug cron here if you have issues.
 ##puts $LOAD_PATH
@@ -81,6 +80,8 @@ if w > max_width
 end
 
 # Set the extended filesystem attributes.
+# NOTE: You could just comment these out if you want to avoid xattr.
+require 'ffi-xattr'
 attrs = Xattr.new(jpg_path)
 attrs['user.location'] = location if ! location.empty?
 attrs['user.title'] = title
@@ -96,5 +97,5 @@ title_and_fname = title.dump + " (#{jpg_path})"
 `notify-send -i #{icon} #{title.dump} #{location.dump}`
 
 # GConfTool is a programmatic means to control GNOME’s wallpaper.
-# Not sure why this is such a heavy op; maybe due to two large monitors.
+# Not sure why this is such a heavy op; maybe due to two large screens.
 `/usr/bin/gconftool -t str -s /desktop/gnome/background/picture_filename #{jpg_path}`
