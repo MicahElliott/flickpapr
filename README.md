@@ -17,6 +17,9 @@ anyway, they’re too small there. So this little script recipe just puts one at
 random on your desktop every so often. It also puts a desktop notification
 describing the photo and location.
 
+<img src="https://github.com/MicahElliott/flickpapr/raw/master/screenshots/montignano.jpg" alt="Flickpapr Screenshot" title="Flickpapr Screenshot" align="center" />
+<br />
+
 Some key information is part of each pic. You’ll want to know its original
 URL, who took it, and sometimes you’ll be able to find geo-location info. This
 is displayed and stowed away in extended filesystem attributes, which can
@@ -27,12 +30,10 @@ future desktops BGs. There are several
 [file managers (photo browsers)](http://www.tuxarena.com/2011/06/20-file-managers-for-ubuntu/)
 to consider. There are also photo editors, such as “shot well”.
 
-<img src="https://github.com/MicahElliott/flickpapr/raw/master/screenshots/flickpapr.jpg" alt="Flickpapr Screenshot" title="Flickpapr Screenshot" align="right" />
-
 ## Dependencies
 
 * GNOME (but adaptable to whatever scriptable desktop manipulator).
-* Ruby
+* Ruby (v1.8.7+)
 * [Nokogiri](http://nokogiri.org/) gem (just made it too easy to not depend on
   flickr API).
 * [ffi-xattr](https://github.com/jarib/ffi-xattr), ffi gems, for creating
@@ -46,8 +47,8 @@ Note that there’s a new-ish limitation in Ubuntu that disables updating
 desktop things via `cron`. The `cronX` wrapper script (included) works around
 this, so use it to call `flickpapr`.
 
-Put something like these (choose one) in your crontab for rotation (`crontab
--e`):
+You can test by simply running `./cronX.zsh flickpapr.rb`. If that works, put
+something like these (choose one) in your crontab for rotation (`crontab -e`):
 
     MAILTO = you@example.com
 
@@ -74,11 +75,10 @@ Later on, you can visit your local collection to query and browse them.
 BTW, You’ll probably want to have semi-transparent terminals to get the most out
 your wallpapers.
 
-## Present shortcomings and areas for improvement
+## Present shortcomings
 
 * Just dumps a file into `$TMPDIR` with no cleanup.
-* Should discard images that are too big so as not to fill your disk!
-* Image gets stretched to desktop width, so top/bottom often cut off.
+* Image gets stretched to desktop width, so top/bottom sometimes cut off.
 * Assumes JPG (99% safe).
 * Only works for GNOME (gconftool).
 * Doesn’t use Flickr API, so DOM/CDNs susceptible to change.
@@ -95,6 +95,7 @@ your wallpapers.
 * Use Zenity (or some other popup/shell-gui tool) for clickable URLs
 * Unicode support
 * Cycle through to grab another image if dimensions unsuitable
+* Darken/mask image to give less attention
 
 ## Surprises
 

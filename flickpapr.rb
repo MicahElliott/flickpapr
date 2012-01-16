@@ -1,4 +1,5 @@
 #! /usr/bin/env ruby
+# encoding: UTF-8
 
 # flickpapr — Randomly choose an “interesting” flickr photo for desktop wallpaper.
 #
@@ -62,7 +63,7 @@ FileUtils.mkdir_p archive
 w, h = `identify #{jpg_path}`.gsub(/.* (\d+x\d+) .*/, '\1').strip.split('x').map!(&:to_f)
 if w / h < 1.2
   # Would be better to do re-fetch loop, but doing the simpler thing.
-  `notify-send -i #{icon_bw} "Wallpaper dimensions unsuitable" "Wait for next cycle"`
+  `notify-send -i #{icon_bw} ":( Dimensions unsuitable" "Wait for next cycle"`
   ##puts about_uri, w, h
   File.delete jpg_path
   exit 1
