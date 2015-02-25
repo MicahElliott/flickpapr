@@ -1,0 +1,10 @@
+[Unit]
+Description=Flickpapr: Flickr Interestingness Wallpaper Rotator
+After=syslog.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/flickloop.zsh
+
+[Install]
+WantedBy=graphical.target

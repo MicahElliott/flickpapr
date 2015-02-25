@@ -7,15 +7,15 @@
 
 Flickr’s [interestingness heuristics](http://www.flickr.com/explore/interesting/)
 generate some lovely images. People visit every day and just click “Refresh”
-to see page after page of these. BUT… it’s much better just have these
+to see page after page of these. BUT… it’s much better to just have these
 delivered right to your desktop as a wallpaper. Well, maybe you should just
 have pics of your cats going there, but these can be a little more
-inspirational. The cats shouldn’t get too jealous; they’ll love all the bugs!
-This little script recipe just puts an image at random onto your desktop every
-so often. It also puts a desktop notification describing the photo and
-location.
+inspirational. The cats shouldn’t get too jealous; they’ll love all the birds
+and bugs! This little script recipe just puts an image at random onto your
+desktop every so often. It also puts a desktop notification describing the
+photo and location.
 
-<img src="https://github.com/MicahElliott/flickpapr/raw/master/screenshots/montignano.jpg" alt="Flickpapr Screenshot" title="Flickpapr Screenshot" align="center" />
+![Flickpapr Screenshot](https://github.com/MicahElliott/flickpapr/raw/master/screenshots/montignano.jpg)
 <br />
 
 Some key information is part of each pic. You’ll want to know its original
@@ -31,14 +31,15 @@ to consider. There are also photo editors, such as
 
 ## Dependencies
 
-* GNOME/gconftool (but adaptable to whatever scriptable desktop manipulator).
 * Ruby (v1.8.7+)
 * [Nokogiri](http://nokogiri.org/) gem (just made it too easy to not depend on
   flickr API).
-* [ffi-xattr](https://github.com/jarib/ffi-xattr), ffi gems, for creating
-  xattrs database
 * ImageMagick, to identify/discard/shrink large/malproportioned images.
 * libnotify-bin, for `notify-send` popup (but could use alternative)
+* [ffi-xattr](https://github.com/jarib/ffi-xattr), ffi gems, for creating
+  xattrs database (optional)
+* [Dunst](https://github.com/knopwob/dunst) notification daemon (optional)
+* `xsel` to add image url to clipboard (optional)
 
 An example for installing everything (on a deb-based system similar to mine):
 
@@ -79,27 +80,37 @@ Later on, you can visit your local collection to query and browse them.
 BTW, You’ll probably want to have semi-transparent terminals to get the most out
 your wallpapers.
 
+## As a Daemon
+See `flickd` for running as a daemon (via `daemonize`), and
+`flickpapr.service` for running with Systemd.
+
 ## Present shortcomings
 
 * Just dumps a file into `$TMPDIR` with no cleanup.
 * Image gets stretched to desktop width, so top/bottom sometimes cut off.
 * Assumes JPG (99% safe).
-* Only works for GNOME (gconftool).
-* Doesn’t use Flickr API, so DOM/CDNs susceptible to change.
+* Uses `feh` as background setter (used to use `gconftool`). Could use
+  `nitrogen` or some other more general wallpaper tool.
+* Doesn’t use Flickr API, so DOM/CDNs susceptible to change (but hasn’t
+  changed in several years).
 * So simple it might not be worth turning into an installable gem.
 * Could use [Daemons](https://github.com/mikehale/daemons) to avoid cron
   klugery.
 * Haven’t researched what “screensaver” apps (cf. “wallpapers”) are out there
   that could also use these images.
 * No way to “like” a pic in real time; have to visit dir to select faves.
+* Not obvious which image file corresponds to the current wallpaper.
+* Should create an AUR PKGBUILD
 
-## Future improvements
+## New feature ideas
 
 * Use Zsh’s `attr` module to make clean query interface
 * Use Zenity (or some other popup/shell-gui tool) for clickable URLs
 * Unicode support
 * Cycle through to grab another image if dimensions unsuitable
+* Determine proportions (check for non-panoramicity) before downloading
 * Darken/mask image to give less attention
+* Logging
 
 ## Surprises
 
@@ -112,6 +123,7 @@ with storing the real geolocation data there anyway.
 
 ## Tangentially related resources
 
-As seen in screenshot:
+Shown in screenshot:
+
 * [Orp Font](https://github.com/MicahElliott/Orp-Font)
 * [Balance Zsh Prompt](https://gist.github.com/720293)

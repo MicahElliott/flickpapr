@@ -1,4 +1,4 @@
-#! /usr/bin/env ruby
+#! /usr/bin/ruby
 # encoding: UTF-8
 
 # flickpapr — Randomly choose an “interesting” flickr photo for desktop wallpaper.
@@ -8,18 +8,34 @@
 #
 # Any output from this script will go to cron, and subsequently into
 # email. So you probably want to keep it silent.
+#
+# NOTE: compare this to space-bg aur package
+
+# Depedencies:
+# * ImageMagick [identify]
+# * wget
+# * ffi-xattr (optional)
+# * libnotify
+# * xsel
 
 require 'nokogiri'
 require 'open-uri'
+# Use simpler sanitize.
+#require 'shellwords'  # pacgem rubysl-shellwords
 
 # Debug cron here if you have issues.
 ##puts $LOAD_PATH
 
-dir = File.expand_path(File.dirname(__FILE__))
-icon    = dir + "/flickr-icon.png"
-icon_bw = dir + "/flickr-icon-bw.png"
+puts "\n\n===="
 
-int_table = 'http://www.flickr.com/explore/interesting/7days/'
+# Security measure to protect string from shelling out/interpolation
+def sanitize str; str.sub(/['`$]/, ''); end
+
+dir = File.expand_path(File.dirname(__FILE__))
+icon    = dir + "/flickr-icon-64.png"
+icon_bw = dir + "/flickr-icon-bw-64.png"
+
+int_table = 'https://www.flickr.com/explore/interesting/7days/'
 doc = Nokogiri::HTML( open(int_table) )
 
 orig = '/sizes/o/in/photostream/'  # o => original
@@ -28,15 +44,21 @@ orig = '/sizes/o/in/photostream/'  # o => original
 base = doc.css('.TwentyFour td.Photo a').first.attributes['href'].value
 
 # http://www.flickr.com/photos/superpepelu/6097194845/sizes/o/in/photostream/
-largest_uri = 'http://flickr.com' + base + orig
+largest_uri = 'https://flickr.com' + base + orig
 
 doc2 = Nokogiri::HTML( open(largest_uri) )
 # e.g. http://farm7.static.flickr.com/6074/6116492734_36e7ec6efc_b.jpg
 pic = doc2.css('#allsizes-photo img').first.attributes['src'].value
+puts "orig title: #{doc2.title}"
 title = doc2.title.split(' | ')[1]
+# Remove "[EXPLORED!!]" junk.
+title.gsub!(/[\(\[\{]explored.*[\)\]\}]/i, '')
+title.gsub!(/.explore.*/i, '')
+title.strip!
+title = sanitize title
 
 # About info.
-about_uri = 'http://flickr.com' + base
+about_uri = 'https://flickr.com' + base
 # Uncomment to have each URL show up in your cron email (as thumbnail in gmail).
 ##puts about_uri
 about_doc = Nokogiri::HTML( open(about_uri) )
@@ -46,9 +68,10 @@ location_tree = about_doc.css('a#photoGeolocation-storylink')
 if ! location_tree.empty?
   location = location_tree.first.children.first.content.strip
   # NOTE: this replaced whitespace is non-ascii (nbsp?)!
-  location.gsub! / /, " "
+  location.gsub!(/ /, " ")
   # e.g. "Little Stoke, Bristol, England, GB"
 end
+location = sanitize location
 
 jpg = File.split(pic).last
 # You do set TMPDIR, don’t you? Hmm, let's not rely on TMPDIR being set.
@@ -62,7 +85,7 @@ FileUtils.mkdir_p archive
 w, h = `identify #{jpg_path}`.gsub(/.* (\d+x\d+) .*/, '\1').strip.split('x').map!(&:to_f)
 if w / h < 1.2
   # Would be better to do re-fetch loop, but doing the simpler thing.
-  `notify-send -i #{icon_bw} ":( Dimensions unsuitable" "Wait for next cycle"`
+  `notify-send -u low -i #{icon_bw} ":( Dimensions unsuitable" "Wait for next cycle"`
   ##puts about_uri, w, h
   File.delete jpg_path
   exit 1
@@ -81,21 +104,32 @@ end
 
 # Set the extended filesystem attributes.
 # NOTE: You could just comment these out if you want to avoid xattr.
-require 'ffi-xattr'
-attrs = Xattr.new(jpg_path)
-attrs['user.location'] = location if ! location.empty?
-attrs['user.title'] = title
-attrs['user.url'] = about_uri
+#require 'ffi-xattr'
+#attrs = Xattr.new(jpg_path)
+#attrs['user.location'] = location if ! location.empty?
+#attrs['user.title'] = title
+#attrs['user.url'] = about_uri
 
 # Might want to someday display filename if popup becomes clickable.
-title_and_fname = title.dump + " (#{jpg_path})"
-##puts about_uri, jpg_path, title, location, title_and_fname
+#title_and_fname = title.dump + " (#{jpg_path})"
+title_and_fname = title + " (#{jpg_path})"
+puts about_uri, jpg_path, title, location, title_and_fname
 
+# Put the URI into system clipboard.
+# Unfortunate that this will overtake the a buffer like Glipper.
+`echo -n #{about_uri} |xsel -i -b --display :0.0`
 
 # Using `dump` to avoid extra quotes (punctuation) going to shell.
 # No sense in displaying URI or filename since can’t copy from NS popup.
-`notify-send -i #{icon} #{title.dump} #{location.dump}`
+# FIXME: insecure, need to escape text, ex:
+# notify-send "Oheo Gulch" "Pua`alu`u Ahupua`a, Hana, HI, US"`
+`notify-send -u low -i #{icon} '#{title}' '#{location}'`
+puts "notify-send -i '#{icon}' '#{title}' '#{location}'"
+#`echo "#{title.dump} #{location.dump}" |osd_cat -f '-*-*-*-*-*-*-60-*-*-*-*-*-*-*' -pmiddle -Acenter -cblue -ured -O3`
 
 # GConfTool is a programmatic means to control GNOME’s wallpaper.
 # Not sure why this is such a heavy op; maybe due to two large screens.
-`/usr/bin/gconftool -t str -s /desktop/gnome/background/picture_filename #{jpg_path}`
+# Should flex to use `nitrogen`.
+#`/usr/bin/gconftool -t str -s /desktop/gnome/background/picture_filename #{jpg_path}`
+puts "/usr/bin/feh --bg-fill #{jpg_path}"
+`/usr/bin/feh --bg-fill #{jpg_path}`
