@@ -41,7 +41,7 @@ to consider. There are also photo editors, such as
 * [Dunst](https://github.com/knopwob/dunst) notification daemon (optional)
 * `xsel` to add image url to clipboard (optional)
 
-An example for installing everything (on a deb-based system similar to mine):
+An example for installing everything (on a deb-based system):
 
     % aptitude install imagemagick libnotify-bin ruby
     % gem install nokogiri ffi-xattr
