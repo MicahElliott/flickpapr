@@ -23,13 +23,27 @@ URL, who took it, and sometimes you’ll be able to find geo-location info. This
 is displayed and stowed away in extended filesystem attributes, which can
 later be queried.
 
+I presently run Flickpapr on [i3](https://i3wm.org/), but used to run it in
+Gnome (hopefully it still does), and want it to work with any DE.
+
 I recommend going through these once a month or so to select some faves for
 future, more permanent desktops BGs. There are several
 [file managers (photo browsers)](http://www.tuxarena.com/2011/06/20-file-managers-for-ubuntu/)
 to consider. There are also photo editors, such as
 [shotwell](http://yorba.org/shotwell/) if you don’t do gimp.
 
-## Dependencies
+## Install
+Git it:
+
+    % cd src
+    % git clone github.com/MicahElliott/flickpapr
+    % cd flickpapr
+
+Install dependencies, and run:
+
+    % ./flickpapr.rb
+
+### Dependencies
 
 * Ruby (v1.8.7+)
 * [Nokogiri](http://nokogiri.org/) gem (just made it too easy to not depend on
@@ -41,10 +55,35 @@ to consider. There are also photo editors, such as
 * [Dunst](https://github.com/knopwob/dunst) notification daemon (optional)
 * `xsel` to add image url to clipboard (optional)
 
-An example for installing everything (on a deb-based system):
+### Arch
+
+    % yaourt -S ruby ruby-nokogiri libnotify feh imagemagick daemonize dunst
+
+(AUR PKGBUILD coming soon.)
+
+### CentOS
+
+    % yum install ruby rubygem-nokogiri ImageMagick feh libnotify xsel
+
+### Ubuntu
 
     % aptitude install imagemagick libnotify-bin ruby
     % gem install nokogiri ffi-xattr
+
+### As a Daemon
+If you’ve already installed
+[daemonize](http://software.clapper.org/daemonize/) (trival on Arch), you can
+run `./flickd.zsh`.
+
+Or install it:
+
+    % git clone http://github.com/bmc/daemonize
+    % cd daemonize
+    % make
+    % sudo make install
+    % ./flickd.zsh
+
+(Systemd support coming soon.)
 
 ## Usage
 
