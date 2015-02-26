@@ -23,28 +23,34 @@ URL, who took it, and sometimes you’ll be able to find geo-location info. This
 is displayed and stowed away in extended filesystem attributes, which can
 later be queried.
 
-I presently run Flickpapr on [i3](https://i3wm.org/), but used to run it in
-Gnome (hopefully it still does), and want it to work with any DE.
+I presently run Flickpapr on [i3](https://i3wm.org/) on Arch and CentOS, but
+used to run it in Gnome (hopefully it still does), and want it to work with
+any DE.
 
 I recommend going through these once a month or so to select some faves for
 future, more permanent desktops BGs. There are several
-[file managers (photo browsers)](http://www.tuxarena.com/2011/06/20-file-managers-for-ubuntu/)
+[file managers (photo browsers)](https://wiki.archlinux.org/index.php/list_of_applications#File_managers)
 to consider. There are also photo editors, such as
 [shotwell](http://yorba.org/shotwell/) if you don’t do gimp.
 
+## Run
+Once:
+
+    % flickpapr
+
+As daemon:
+
+    % flickd
+
 ## Install
-Git it:
+### Arch
+Use something to get it from AUR; e.g., yaourt:
 
-    % cd src
-    % git clone github.com/MicahElliott/flickpapr
-    % cd flickpapr
+    % yaourt -S flickpapr-git
+    % aurvote -v flickpapr-git
 
-Install dependencies, and run:
-
-    % ./flickpapr
-
-### Dependencies
-
+### Others
+Dependencies:
 * Ruby (v1.8.7+)
 * [Nokogiri](http://nokogiri.org/) gem (just made it too easy to not depend on
   flickr API).
@@ -55,17 +61,17 @@ Install dependencies, and run:
 * [Dunst](https://github.com/knopwob/dunst) notification daemon (optional)
 * `xsel` to add image url to clipboard (optional)
 
-### Arch
+Git it:
 
-    % yaourt -S ruby ruby-nokogiri libnotify feh imagemagick daemonize dunst
+    % cd src
+    % git clone github.com/MicahElliott/flickpapr
+    % cd flickpapr
 
-(AUR PKGBUILD coming soon.)
-
-### CentOS
+CentOS:
 
     % yum install ruby rubygem-nokogiri ImageMagick feh libnotify xsel
 
-### Ubuntu
+Ubuntu:
 
     % aptitude install imagemagick libnotify-bin ruby
     % gem install nokogiri ffi-xattr
@@ -84,7 +90,7 @@ Or install it:
     % cd -
     % ./flickd
 
-(Systemd support coming soon.)
+(Systemd support maybe coming soon.)
 
 ## Usage
 Later on, you can visit your local collection to query and browse them.
@@ -96,15 +102,11 @@ Later on, you can visit your local collection to query and browse them.
     # file: 6672593991_b0cf581e34_o.jpg
     user.location="Kijkduin, The Hague, ZH, NL"
     ...
-    % nautilus .
+    % nemo .
     % mv {x,y,z}.jpg ~/Photos/wallpapers
 
 BTW, You’ll probably want to have semi-transparent terminals to get the most out
 your wallpapers.
-
-## As a Daemon
-See `flickd` for running as a daemon (via `daemonize`), and
-`flickpapr.service` for running with Systemd.
 
 ## Present shortcomings
 
@@ -115,29 +117,26 @@ See `flickd` for running as a daemon (via `daemonize`), and
   `nitrogen` or some other more general wallpaper tool.
 * Doesn’t use Flickr API, so DOM/CDNs susceptible to change (but hasn’t
   changed in several years).
-* So simple it might not be worth turning into an installable gem.
-* Could use [Daemons](https://github.com/mikehale/daemons) to avoid cron
-  klugery.
 * Haven’t researched what “screensaver” apps (cf. “wallpapers”) are out there
   that could also use these images.
 * No way to “like” a pic in real time; have to visit dir to select faves.
 * Not obvious which image file corresponds to the current wallpaper.
-* Should create an AUR PKGBUILD
 
 ## New feature ideas
 
 * Use Zsh’s `attr` module to make clean query interface
 * Use Zenity (or some other popup/shell-gui tool) for clickable URLs
+* Use [Instagram POTD](https://instagram.com/photooftheday/)
 * Unicode support
 * Cycle through to grab another image if dimensions unsuitable
 * Determine proportions (check for non-panoramicity) before downloading
 * Darken/mask image to give less attention
-* Logging
+* Better logging
 
 ## Surprises
 
 _Why not just use the flickr API?_ Just wanted to minimize dependencies, and
-the scraping a la nokogiri is really simple.
+the scraping via nokogiri is really simple.
 
 _Why not just use EXIF metadata for storing pic info?_ EXIF data is noisy,
 mostly not wanted, and difficult to query. Flickr doesn’t do much (anything?)

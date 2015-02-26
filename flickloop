@@ -1,6 +1,8 @@
 #! /usr/bin/env zsh
 
 # flickloop — run flickpapr forever in a sleep loop
+#
+# called by flickd
 
 sleeptime=${FLICK_INTVL=10m}
 

@@ -6,9 +6,6 @@
 # AUTHOR:  Micah Elliott http://MicahElliott.com
 # LICENSE: WTFPL http://sam.zoy.org/wtfpl/
 #
-# Any output from this script will go to cron, and subsequently into
-# email. So you probably want to keep it silent.
-#
 # NOTE: compare this to space-bg aur package
 
 # Depedencies:
@@ -49,7 +46,7 @@ largest_uri = 'https://flickr.com' + base + orig
 doc2 = Nokogiri::HTML( open(largest_uri) )
 # e.g. http://farm7.static.flickr.com/6074/6116492734_36e7ec6efc_b.jpg
 pic = doc2.css('#allsizes-photo img').first.attributes['src'].value
-puts "orig title: #{doc2.title}"
+##puts "orig title: #{doc2.title}"
 title = doc2.title.split(' | ')[1]
 # Remove "[EXPLORED!!]" junk.
 title.gsub!(/[\(\[\{]explored.*[\)\]\}]/i, '')
@@ -124,12 +121,12 @@ puts about_uri, jpg_path, title, location, title_and_fname
 # FIXME: insecure, need to escape text, ex:
 # notify-send "Oheo Gulch" "Pua`alu`u Ahupua`a, Hana, HI, US"`
 `notify-send -u low -i #{icon} '#{title}' '#{location}'`
-puts "notify-send -i '#{icon}' '#{title}' '#{location}'"
+##puts "notify-send -i '#{icon}' '#{title}' '#{location}'"
 #`echo "#{title.dump} #{location.dump}" |osd_cat -f '-*-*-*-*-*-*-60-*-*-*-*-*-*-*' -pmiddle -Acenter -cblue -ured -O3`
 
 # GConfTool is a programmatic means to control GNOME’s wallpaper.
 # Not sure why this is such a heavy op; maybe due to two large screens.
 # Should flex to use `nitrogen`.
 #`/usr/bin/gconftool -t str -s /desktop/gnome/background/picture_filename #{jpg_path}`
-puts "/usr/bin/feh --bg-fill #{jpg_path}"
+##puts "/usr/bin/feh --bg-fill #{jpg_path}"
 `/usr/bin/feh --bg-fill #{jpg_path}`

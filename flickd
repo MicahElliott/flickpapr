@@ -4,4 +4,8 @@
 
 TMPDIR=${TMPDIR=/tmp}
 
-daemonize -o $TMPDIR/flickpapr.log -p $TMPDIR/flickpapr.pid -v ${0:a:h}/flickloop
+daemonize -o $TMPDIR/flickpapr.log \
+  -p $TMPDIR/flickpapr.pid \
+  -l $TMPDIR/flickpapr.lock \
+  -v ${0:a:h}/flickloop
+print "Stop with: kill \`cat $TMPDIR/flickpapr.pid\`"
