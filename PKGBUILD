@@ -1,55 +1,30 @@
 # Author: Micah Elliott <mde@MicahElliott.com>
+# package guidelines: https://wiki.archlinux.org/index.php/VCS_package_guidelines
 
 pkgname=flickpapr-git
-pkgver=20150225
+_pkgname=flickpapr
+pkgver=r16.9c6f4ad
 pkgrel=1
-pkgdesc="randomly choose an “interesting” flickr photo for desktop wallpaper"
+pkgdesc='randomly choose an “interesting” flickr photo for desktop wallpaper'
 arch=('any')
-url="https://github.com/MicahElliott/flickpapr"
+url='https://github.com/MicahElliott/flickpapr'
 license=('WTFPL')
 depends=('zsh' 'ruby' 'ruby-nokogiri' 'libnotify' 'feh' 'imagemagick' 'daemonize' 'dunst')
-provides=('flickpapr' 'flickloop' 'flickd')
+provides=($_pkgname=$pkgver)
 makedepends=('git')
-source=("git://github.com/MicahElliott/flickpapr"
-        'flickpapr'
-        'flickloop'
-        'flickd'
-        'README.md'
-)
-md5sums=('SKIP'
-         '27514fb6d509ccfef32b42f3aab76ab2'
-         'da06c7dc65247a86d0ad0a97e2c6476c'
-         'd4985dc9a718332491c89ef72171dea4'
-         '588e9ea9f870e14e1be83faf40ca7c73')
+source=('git://github.com/MicahElliott/flickpapr.git')
+md5sums=('SKIP')
 
-_gitroot="git://github.com/MicahElliott/flickpapr"
-_gitname=flickpapr-git
-
-build() {
-  cd "$srcdir"
-  msg "Connecting to GIT server…"
-
-  if [[ -d "$_gitname" ]]; then
-    cd "$_gitname" && git pull origin
-    msg "The local files are updated."
-  else
-    git clone "$_gitroot" "$_gitname"
-  fi
-
-  msg "GIT checkout done or server timeout"
-  msg "Starting build…"
-
-  rm -rf "$srcdir/$_gitname-build"
-  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
-  cd "$srcdir/$_gitname-build"
+pkgver() {
+  cd $_pkgname
+  printf 'r%s.%s' "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 package() {
-  cd "$srcdir/$_gitname-build"
+  cd $_pkgname
   install -Dm755 flickpapr $pkgdir/usr/bin/flickpapr
   install -Dm755 flickloop $pkgdir/usr/bin/flickloop
-  install -Dm755 flickd $pkgdir/usr/bin/flickd
-  #install -Dm644 flickpapr.1.gz $pkgdir/usr/share/man/man1/flickpapr.1.gz
+  install -Dm755 flickd    $pkgdir/usr/bin/flickd
 }
 
 # vim:set ts=2 sw=2 et:
