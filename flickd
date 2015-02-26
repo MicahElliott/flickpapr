@@ -8,4 +8,6 @@ daemonize -o $TMPDIR/flickpapr.log \
   -p $TMPDIR/flickpapr.pid \
   -l $TMPDIR/flickpapr.lock \
   -v ${0:a:h}/flickloop
-print "Stop with: kill \`cat $TMPDIR/flickpapr.pid\`"
+print 'Stop with:'
+print "kill -TERM \`cat $TMPDIR/flickpapr.pid\`"
+print "rm $TMPDIR/flickpapr.lock"
