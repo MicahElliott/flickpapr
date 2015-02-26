@@ -1,5 +1,24 @@
 #! /bin/bash
 
+# Call this from your crontab if you like.
+
+# Note that there’s a new-ish limitation in Ubuntu that disables updating
+# desktop things via `cron`. The `cronX` wrapper script (included) works
+# around this, so use it to call `flickpapr`.
+#
+# You can test by simply running `./cronX.sh flickpapr`. If that works, put
+# something like these (choose one) in your crontab for rotation (`crontab -e`):
+#
+#     MAILTO = you@example.com
+#
+#     @hourly .../cronX.sh .../flickpapr
+#
+#     # Pomodoro productivity!
+#     0,30 * * * * ...
+#
+#     # Firehose of distraction.
+#     0-55/5 * * * * ...
+
 # If you're doing system ruby.
 export RUBYOPT="rubygems"
 export GEM_HOME=$HOME/.gem

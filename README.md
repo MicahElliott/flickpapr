@@ -41,7 +41,7 @@ Git it:
 
 Install dependencies, and run:
 
-    % ./flickpapr.rb
+    % ./flickpapr
 
 ### Dependencies
 
@@ -73,7 +73,7 @@ Install dependencies, and run:
 ### As a Daemon
 If you’ve already installed
 [daemonize](http://software.clapper.org/daemonize/) (trival on Arch), you can
-run `./flickd.zsh`.
+run `./flickd`.
 
 Or install it:
 
@@ -81,32 +81,15 @@ Or install it:
     % cd daemonize
     % make
     % sudo make install
-    % ./flickd.zsh
+    % cd -
+    % ./flickd
 
 (Systemd support coming soon.)
 
 ## Usage
-
-Note that there’s a new-ish limitation in Ubuntu that disables updating
-desktop things via `cron`. The `cronX` wrapper script (included) works around
-this, so use it to call `flickpapr`.
-
-You can test by simply running `./cronX.sh flickpapr.rb`. If that works, put
-something like these (choose one) in your crontab for rotation (`crontab -e`):
-
-    MAILTO = you@example.com
-
-    @hourly .../cronX.sh .../flickpapr.rb
-
-    # Pomodoro productivity!
-    0,30 * * * * ...
-
-    # Firehose of distraction.
-    0-55/5 * * * * ...
-
 Later on, you can visit your local collection to query and browse them.
 
-    % cd ~/tmp/flickr
+    % cd $TMPDIR/flickr
     % getfattr -n user.location *.jpg
     # file: 6667763073_e3271a96e6_o.jpg
     user.location="Velence, Fejér, HU"
