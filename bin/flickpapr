@@ -29,8 +29,9 @@ puts "\n\n===="
 def sanitize str; str.sub(/['`$]/, ''); end
 
 dir = File.expand_path(File.dirname(__FILE__))
-icon    = dir + "/flickr-icon-64.png"
-icon_bw = dir + "/flickr-icon-bw-64.png"
+icon    = dir + "/../share/flickpapr/flickr-icon-64.png"
+icon_bw = dir + "/../share/flickpapr/flickr-icon-bw-64.png"
+puts icon
 
 int_table = 'https://www.flickr.com/explore/interesting/7days/'
 doc = Nokogiri::HTML( open(int_table) )

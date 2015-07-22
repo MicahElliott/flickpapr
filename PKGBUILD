@@ -22,9 +22,11 @@ pkgver() {
 
 package() {
   cd $_pkgname
-  install -Dm755 flickpapr $pkgdir/usr/bin/flickpapr
-  install -Dm755 flickloop $pkgdir/usr/bin/flickloop
-  install -Dm755 flickd    $pkgdir/usr/bin/flickd
+  install -Dm755 bin/flickpapr $pkgdir/usr/bin/flickpapr
+  install -Dm755 bin/flickloop $pkgdir/usr/bin/flickloop
+  install -Dm755 bin/flickd    $pkgdir/usr/bin/flickd
+  install -Dm755 share/flickpapr/flickr-icon-64.png    $pkgdir/usr/share/flickpapr/
+  install -Dm755 share/flickpapr/flickr-icon-bw-64.png $pkgdir/usr/share/flickpapr/
 }
 
 # vim:set ts=2 sw=2 et:
