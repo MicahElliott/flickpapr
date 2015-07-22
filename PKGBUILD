@@ -3,7 +3,7 @@
 
 pkgname=flickpapr-git
 _pkgname=flickpapr
-pkgver=r20.c2519b5
+pkgver=r21.9b91c11
 pkgrel=1
 pkgdesc='randomly choose an “interesting” flickr photo for desktop wallpaper'
 arch=('any')
