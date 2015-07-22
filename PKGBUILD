@@ -3,7 +3,7 @@
 
 pkgname=flickpapr-git
 _pkgname=flickpapr
-pkgver=r16.9c6f4ad
+pkgver=r20.c2519b5
 pkgrel=1
 pkgdesc='randomly choose an “interesting” flickr photo for desktop wallpaper'
 arch=('any')
@@ -25,8 +25,8 @@ package() {
   install -Dm755 bin/flickpapr $pkgdir/usr/bin/flickpapr
   install -Dm755 bin/flickloop $pkgdir/usr/bin/flickloop
   install -Dm755 bin/flickd    $pkgdir/usr/bin/flickd
-  install -Dm755 share/flickpapr/flickr-icon-64.png    $pkgdir/usr/share/flickpapr/
-  install -Dm755 share/flickpapr/flickr-icon-bw-64.png $pkgdir/usr/share/flickpapr/
+  install -Dm755 share/flickpapr/flickr-icon-64.png    $pkgdir/usr/share/flickpapr/flickr-icon-64.png
+  install -Dm755 share/flickpapr/flickr-icon-bw-64.png $pkgdir/usr/share/flickpapr/flickr-icon-bw-64.png 
 }
 
 # vim:set ts=2 sw=2 et:
