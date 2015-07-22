@@ -55,7 +55,7 @@ title.strip!
 title = sanitize title
 
 # About info.
-about_uri = 'https://flickr.com' + base
+about_uri = 'https://www.flickr.com' + base
 # Uncomment to have each URL show up in your cron email (as thumbnail in gmail).
 ##puts about_uri
 about_doc = Nokogiri::HTML( open(about_uri) )
