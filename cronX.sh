@@ -1,5 +1,9 @@
 #! /bin/bash
 
+# NOTE: This script may not be necessary for anyone now that the
+# background setter is using DISPLAY=:0.0
+# http://unix.stackexchange.com/questions/10121/open-a-window-on-a-remote-x-display-why-cannot-open-display
+
 # Call this from your crontab if you like.
 
 # Note that there’s a new-ish limitation in Ubuntu that disables updating
