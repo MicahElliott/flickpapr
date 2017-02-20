@@ -4,7 +4,8 @@ After=syslog.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/flickloop.zsh
+ExecStart=/usr/bin/flickloop
+ExecStop=/usr/bin/flickill
 
 [Install]
 WantedBy=graphical.target

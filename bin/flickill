@@ -1,0 +1,9 @@
+#! /usr/bin/env zsh
+
+# flickill — kill flickpaper daemon
+
+kill -TERM `cat $TMPDIR/flickpapr.pid`
+rm $TMPDIR/flickpapr.lock
+
+print 'Killed flickpapr daemon'
+print "You may want to remove JPGs in $TMPDIR/flickr/"
