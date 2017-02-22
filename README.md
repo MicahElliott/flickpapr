@@ -1,18 +1,25 @@
-# flickpapr — Randomly choose an “interesting” flickr photo for desktop wallpaper.
+# flickpapr — Randomly choose an “interesting” flickr photo for linux desktop wallpaper.
+
+Flickpapr will periodically pull a new interesting wallpaper to your
+Linux desktop.  There is no account setup.  Works well even with
+multiple monitors.
 
 * AUTHOR:  [Micah Elliott](http://MicahElliott.com)
-* LICENSE: [WTFPL](http://sam.zoy.org/wtfpl/)
+* LICENSE: [GPL](https://www.gnu.org/licenses/gpl-2.0.html)
+
 
 ## About Flickr Interestingness
 
-Flickr’s [interestingness heuristics](http://www.flickr.com/explore/interesting/)
-generate some lovely images. People visit every day and just click “Refresh”
-to see page after page of these. BUT… it’s much better to just have these
-delivered right to your desktop as a wallpaper. Well, maybe you should just
-have pics of your cats going there, but these can be a little more
-inspirational. The cats shouldn’t get too jealous; they’ll love all the birds
-and bugs! This little script recipe just puts an image at random onto your
-desktop every so often. It also puts a desktop notification describing the
+Flickr’s
+[interestingness heuristics](http://www.flickr.com/explore/interesting/) generate
+some lovely images. People visit every day and just click “Refresh” to
+see page after page of these. BUT… it’s much better to just have these
+delivered every few minutes right to your desktop as a
+wallpaper. Well, maybe you should just have pics of your cats going
+there, but these can be a little more inspirational. The cats
+shouldn’t get too jealous; they’ll love all the birds and bugs! This
+little script recipe just puts an image at random onto your desktop
+every so often. It also puts a desktop notification describing the
 photo and location.
 
 ![Flickpapr Screenshot](https://github.com/MicahElliott/flickpapr/raw/master/screenshots/montignano.jpg)
@@ -23,9 +30,9 @@ URL, who took it, and sometimes you’ll be able to find geo-location info. This
 is displayed and stowed away in extended filesystem attributes, which can
 later be queried.
 
-I presently run Flickpapr on [i3](https://i3wm.org/) on Arch and CentOS, but
-used to run it in Gnome (hopefully it still does), and want it to work with
-any DE.
+I presently run Flickpapr on [i3](https://i3wm.org/) on Arch Linux and
+CentOS, but used to run it in Gnome (hopefully it still does), and
+want it to work with any DE.
 
 I recommend going through these once a month or so to select some faves for
 future, more permanent desktops BGs. There are several
@@ -33,24 +40,33 @@ future, more permanent desktops BGs. There are several
 to consider. There are also photo editors, such as
 [shotwell](http://yorba.org/shotwell/) if you don’t do gimp.
 
+
 ## Run
-Once:
+Once, just as a test:
 
     % flickpapr
 
-As daemon:
+As daemon, non systemd:
 
     % flickd
 
+With systemd, permanently, as user service:
+
+    % alias scu='systemctl --user'  # add to your shell rc!
+    % scu start flickpapr
+    % scu enable flickpapr
+
+
 ## Install
+
 ### Arch
 Use something to get it from AUR; e.g., yaourt:
 
-    % yaourt -S flickpapr-git
-    % aurvote -v flickpapr-git
+    % yaourt -S flickpapr
+    % aurvote -v flickpapr
 
 ### Others
-Dependencies:
+Dependencies (handled for you in Arch):
 * Ruby (v1.8.7+)
 * [Nokogiri](http://nokogiri.org/) gem (just made it too easy to not depend on
   flickr API).
@@ -60,6 +76,7 @@ Dependencies:
   xattrs database (optional)
 * [Dunst](https://github.com/knopwob/dunst) notification daemon (optional)
 * `xsel` to add image url to clipboard (optional)
+* `feh` to set the wallpaper
 
 Git it:
 
@@ -76,21 +93,6 @@ Ubuntu:
     % aptitude install imagemagick libnotify-bin ruby
     % gem install nokogiri ffi-xattr
 
-### As a Daemon
-If you’ve already installed
-[daemonize](http://software.clapper.org/daemonize/) (trival on Arch), you can
-run `./flickd`.
-
-Or install it:
-
-    % git clone http://github.com/bmc/daemonize
-    % cd daemonize
-    % make
-    % sudo make install
-    % cd -
-    % ./flickd
-
-(Systemd support maybe coming soon.)
 
 ## Usage
 Later on, you can visit your local collection to query and browse them.
@@ -108,6 +110,7 @@ Later on, you can visit your local collection to query and browse them.
 BTW, You’ll probably want to have semi-transparent terminals to get the most out
 your wallpapers.
 
+
 ## Present shortcomings
 
 * Just dumps a file into `$TMPDIR` with no cleanup.
@@ -117,21 +120,23 @@ your wallpapers.
   `nitrogen` or some other more general wallpaper tool.
 * Doesn’t use Flickr API, so DOM/CDNs susceptible to change (but hasn’t
   changed in several years).
-* Haven’t researched what “screensaver” apps (cf. “wallpapers”) are out there
-  that could also use these images.
 * No way to “like” a pic in real time; have to visit dir to select faves.
 * Not obvious which image file corresponds to the current wallpaper.
+
 
 ## New feature ideas
 
 * Use Zsh’s `attr` module to make clean query interface
 * Use Zenity (or some other popup/shell-gui tool) for clickable URLs
+* Haven’t researched what “screensaver” apps (cf. “wallpapers”) are out there
+  that could also use these images.
 * Use [Instagram POTD](https://instagram.com/photooftheday/)
 * Unicode support
 * Cycle through to grab another image if dimensions unsuitable
 * Determine proportions (check for non-panoramicity) before downloading
 * Darken/mask image to give less attention
 * Better logging
+
 
 ## Surprises
 
@@ -141,10 +146,3 @@ the scraping via nokogiri is really simple.
 _Why not just use EXIF metadata for storing pic info?_ EXIF data is noisy,
 mostly not wanted, and difficult to query. Flickr doesn’t do much (anything?)
 with storing the real geolocation data there anyway.
-
-## Tangentially related resources
-
-Shown in screenshot:
-
-* [Orp Font](https://github.com/MicahElliott/Orp-Font)
-* [Balance Zsh Prompt](https://gist.github.com/720293)
