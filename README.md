@@ -34,38 +34,23 @@ I presently run Flickpapr on [i3](https://i3wm.org/) on Arch Linux and
 CentOS, but used to run it in Gnome (hopefully it still does), and
 want it to work with any DE.
 
-I recommend going through these once a month or so to select some faves for
-future, more permanent desktops BGs. There are several
-[file managers (photo browsers)](https://wiki.archlinux.org/index.php/list_of_applications#File_managers)
-to consider. There are also photo editors, such as
-[shotwell](http://yorba.org/shotwell/) if you don’t do gimp.
-
-
-## Run
-Once, just as a test:
-
-    % flickpapr
-
-As daemon, non systemd:
-
-    % flickd
-
-With systemd, permanently, as user service:
-
-    % alias scu='systemctl --user'  # add to your shell rc!
-    % scu start flickpapr
-    % scu enable flickpapr
+I recommend going through the saved archives once a month or so to
+select some faves for future, more permanent desktops BGs. There are
+several
+[file managers (photo browsers)](https://wiki.archlinux.org/index.php/list_of_applications#File_managers) to
+consider. There are also photo editors, such
+as [shotwell](http://yorba.org/shotwell/) if you don’t do gimp.
 
 
 ## Install
 
-### Arch
+### Arch package
 Use something to get it from AUR; e.g., yaourt:
 
     % yaourt -S flickpapr
     % aurvote -v flickpapr
 
-### Others
+### Or, from source
 Dependencies (handled for you in Arch):
 * Ruby (v1.8.7+)
 * [Nokogiri](http://nokogiri.org/) gem (just made it too easy to not depend on
@@ -91,10 +76,25 @@ CentOS:
 Ubuntu:
 
     % aptitude install imagemagick libnotify-bin ruby
-    % gem install nokogiri ffi-xattr
+    % gem install nokogiri ffi-xattr feh
 
 
-## Usage
+## Run
+Once, just as a test:
+
+    % flickpapr
+
+As daemon, non systemd:
+
+    % flickd
+
+With systemd, permanently, as user service:
+
+    % alias scu='systemctl --user'  # add to your shell rc!
+    % scu start flickpapr
+    % scu enable flickpapr
+
+## Advanced usage
 Later on, you can visit your local collection to query and browse them.
 
     % cd $TMPDIR/flickr
