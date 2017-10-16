@@ -47,8 +47,16 @@ as [shotwell](http://yorba.org/shotwell/) if you don’t do gimp.
 ### Arch package
 Use something to get it from AUR; e.g., yaourt:
 
+    % pacgem nokogiri # temporary; see note below
     % yaourt -S flickpapr
     % aurvote -v flickpapr
+    % sudo systemctl enable flickpapr
+    % sudo systemctl start flickpapr
+
+_(2017-10-16: Note that the AUR Nokogiri package is presently broken.
+I've emailed the maintainer to get the trivial version-fix updated.
+For now, you can uninstall nokogiri, run `pacgem nokogiri` to install
+an updated/fixed version, then install flickpapr as per above.)_
 
 ### Or, from source
 Dependencies (handled for you in Arch):
